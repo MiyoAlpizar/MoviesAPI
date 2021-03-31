@@ -30,5 +30,49 @@ namespace MoviesAPI.Controllers
             return mapper.Map<List<GenderDTO>>(genders);
         }
 
+        [HttpGet("{id:int}", Name ="GetGender")]
+        public async Task<ActionResult<GenderDTO>> Get(int id)
+        {
+            var entity = await context.Genders.FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            return mapper.Map<GenderDTO>(entity);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<GenderDTO>> Post([FromBody] CreateGenderDTO create)
+        {
+            var entidad = mapper.Map<Gender>(create);
+            context.Add(entidad);
+            await context.SaveChangesAsync();
+            var genderDTO = mapper.Map<GenderDTO>(entidad);
+            return new CreatedAtRouteResult("GetGender", new { id = genderDTO.Id }, genderDTO);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] CreateGenderDTO create)
+        {
+            var entidad = mapper.Map<Gender>(create);
+            entidad.Id = id;
+            context.Entry(entidad).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var exists = await context.Genders.AnyAsync(x => x.Id == id);
+            if (!exists)
+            {
+                return NotFound();
+            }
+            context.Remove(new Gender { Id = id });
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
     }
 }

@@ -14,4 +14,13 @@ namespace MoviesAPI.DTOs
         [StringLength(40)]
         public string Name { get; set; }
     }
+
+    public class CreateGenderDTO
+    {
+        [Required]
+        [StringLength(40)]
+        public string Name { get; set; }
+    }
+
+
 }
