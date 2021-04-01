@@ -46,12 +46,6 @@ namespace MoviesAPI.Helpers
 
             CreateMap<CinemaRoomDTO, CinemaRoom>()
                 .ForMember(x => x.Location, x => x.MapFrom(y => geometry.CreatePoint(new Coordinate(y.Longitude, y.Latitude))));
-
-
-
-           
-
-
         }
 
         private List<ActorMovieDetailDTO> MapMovieActors(Movie movie, MovieDetailsDTO movieDetailsDTO)
