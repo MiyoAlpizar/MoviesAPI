@@ -19,7 +19,7 @@ namespace MoviesAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MoviesController : ControllerBase
+    public class MoviesController : CustomBaseController
     {
         private readonly ApplicationDBContext _context;
         private readonly IMapper mapper;
@@ -27,7 +27,7 @@ namespace MoviesAPI.Controllers
         private readonly ILogger<MoviesController> logger;
         private readonly string CONTAINER = "movies";
 
-        public MoviesController(ApplicationDBContext context, IMapper mapper, IFileStorage storage, ILogger<MoviesController> logger)
+        public MoviesController(ApplicationDBContext context, IMapper mapper, IFileStorage storage, ILogger<MoviesController> logger): base(context, mapper)
         {
             _context = context;
             this.mapper = mapper;
@@ -184,27 +184,7 @@ namespace MoviesAPI.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<MoviePatchDTO> patchDocument)
         {
-            if (patchDocument == null)
-            {
-                return BadRequest();
-            }
-
-            var entity = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            var entityDTO = mapper.Map<MoviePatchDTO>(entity);
-            patchDocument.ApplyTo(entityDTO, ModelState);
-            var isValid = TryValidateModel(entityDTO);
-            if (!isValid)
-            {
-                return BadRequest(ModelState);
-            }
-            mapper.Map(entityDTO, entity);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            return await Patch<Movie, MoviePatchDTO>(id, patchDocument);
 
         }
 
@@ -212,21 +192,7 @@ namespace MoviesAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Movie>> DeleteMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            _context.Movies.Remove(movie);
-            await _context.SaveChangesAsync();
-
-            return movie;
-        }
-
-        private bool MovieExists(int id)
-        {
-            return _context.Movies.Any(e => e.Id == id);
+            return await Delete<Movie>(id);
         }
 
         private void SetOrderActors(Movie movie)
