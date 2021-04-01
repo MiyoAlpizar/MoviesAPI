@@ -15,7 +15,7 @@ namespace MoviesAPI
         }
 
         public DbSet<Gender> Genders { get; set; }
-
+        public DbSet<Actor> Actors { get; set; }
 
     }
 }
