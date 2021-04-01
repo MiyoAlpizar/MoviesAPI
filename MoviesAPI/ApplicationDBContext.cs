@@ -23,6 +23,7 @@ namespace MoviesAPI
         public DbSet<MoviesGenders> MoviesGenders { get; set; }
         public DbSet<CinemaRoom> CinemaRooms  { get; set; }
         public DbSet<MoviesCinemaRooms> MoviesCinemaRooms { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

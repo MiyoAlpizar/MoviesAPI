@@ -43,13 +43,11 @@ namespace MoviesAPI.Controllers
             var today = DateTime.Today;
 
             var nextMovies = await _context.Movies
-                .Where(x => x.DateIssued > today)
                 .OrderBy(x => x.DateIssued)
                 .Take(top)
                 .ToListAsync();
 
             var inTheather = await _context.Movies
-                .Where(x => x.IsInTheater)
                 .OrderBy(x => x.DateIssued)
                 .Take(top)
                 .ToListAsync();

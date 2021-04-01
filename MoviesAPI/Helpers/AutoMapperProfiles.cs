@@ -50,6 +50,10 @@ namespace MoviesAPI.Helpers
 
             CreateMap<ApplicationUser, UserInfo>().ReverseMap();
             CreateMap<ApplicationUser, UserInfoDTO>();
+
+            CreateMap<Review, ReviewDTO>().ForMember(x => x.UserName, x => x.MapFrom(y => y.User.UserName));
+            CreateMap<ReviewDTO, Review>();
+            CreateMap<ReviewCreateDTO, Review>();
         }
 
         private List<ActorMovieDetailDTO> MapMovieActors(Movie movie, MovieDetailsDTO movieDetailsDTO)
