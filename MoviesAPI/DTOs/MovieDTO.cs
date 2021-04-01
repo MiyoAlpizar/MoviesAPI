@@ -51,5 +51,31 @@ namespace MoviesAPI.DTOs
         public DateTime DateIssued { get; set; }
     }
 
+    public class MoviesIndexDTO
+    {
+        public List<MovieDTO> NextMovies { get; set; }
+        public List<MovieDTO> InTheathers { get; set; }
+    }
 
+    public class FilterMoviesDTO
+    {
+        public int Page { get; set; } = 1;
+        public int RegistersPerPage { get; set; } = 10;
+
+        public PaginationDTO PaginationDTO
+        {
+            get
+            {
+                return new PaginationDTO() { Page = Page, QuantityRegistersPerPage = RegistersPerPage };
+            }
+        }
+
+        public string Title { get; set; }
+
+        public string Gender { get; set; }
+
+        public bool InTheather { get; set; }
+
+        public bool Next { get; set; }
+    }
 }
