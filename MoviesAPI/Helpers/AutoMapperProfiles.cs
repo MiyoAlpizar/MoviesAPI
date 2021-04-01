@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace MoviesAPI.Helpers
 {
     public class AutoMapperProfiles : Profile
     {
-        public AutoMapperProfiles()
+        public AutoMapperProfiles(GeometryFactory geometry)
         {
             CreateMap<Gender, GenderDTO>().ReverseMap();
             CreateMap<CreateGenderDTO, Gender>();
@@ -28,8 +30,26 @@ namespace MoviesAPI.Helpers
                 .ForMember(x => x.Genders, o => o.MapFrom(MapMovieGenders))
                 .ForMember(x => x.Actors, o => o.MapFrom(MapMovieActors));
 
-            CreateMap<CinemaRoom, CinemaRoomCreateDTO>().ReverseMap();
-            CreateMap<CinemaRoom, CinemaRoomDTO>().ReverseMap();
+
+            CreateMap<CinemaRoom, CinemaRoomDTO>()
+              .ForMember(x => x.Latitude, x => x.MapFrom(y => y.Location.Y))
+              .ForMember(x => x.Longitude, x => x.MapFrom(y => y.Location.X));
+
+            CreateMap<CinemaRoom, CinemaRoomCreateDTO>()
+                .ForMember(x => x.Latitude, x => x.MapFrom(y => y.Location.Y))
+                .ForMember(x => x.Longitude, x => x.MapFrom(y => y.Location.X));
+
+           
+
+            CreateMap<CinemaRoomCreateDTO, CinemaRoom>()
+                .ForMember(x => x.Location, x => x.MapFrom(y => geometry.CreatePoint(new Coordinate(y.Longitude, y.Latitude))));
+
+            CreateMap<CinemaRoomDTO, CinemaRoom>()
+                .ForMember(x => x.Location, x => x.MapFrom(y => geometry.CreatePoint(new Coordinate(y.Longitude, y.Latitude))));
+
+
+
+           
 
 
         }

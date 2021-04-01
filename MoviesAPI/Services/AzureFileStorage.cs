@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
+using Azure.Storage.Blobs;
 using System;
 using System.Collections.Generic;
 using System.IO;
