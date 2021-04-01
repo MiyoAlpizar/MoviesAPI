@@ -17,6 +17,11 @@ namespace MoviesAPI.Models
         public string Password { get; set; }
     }
 
+    public class UserInfoDTO
+    {
+        public string Email { get; set; }
+    }
+
     public class UserToken
     {
         public string Token { get; set; }

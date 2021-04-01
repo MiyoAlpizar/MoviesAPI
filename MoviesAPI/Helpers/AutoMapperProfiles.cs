@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
+using MoviesAPI.Models;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using System;
@@ -46,6 +47,9 @@ namespace MoviesAPI.Helpers
 
             CreateMap<CinemaRoomDTO, CinemaRoom>()
                 .ForMember(x => x.Location, x => x.MapFrom(y => geometry.CreatePoint(new Coordinate(y.Longitude, y.Latitude))));
+
+            CreateMap<ApplicationUser, UserInfo>().ReverseMap();
+            CreateMap<ApplicationUser, UserInfoDTO>();
         }
 
         private List<ActorMovieDetailDTO> MapMovieActors(Movie movie, MovieDetailsDTO movieDetailsDTO)

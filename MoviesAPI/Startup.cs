@@ -55,7 +55,7 @@ namespace MoviesAPI
             });
             services.AddControllers().AddNewtonsoftJson();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDBContext>()
                 .AddDefaultTokenProviders();
 
