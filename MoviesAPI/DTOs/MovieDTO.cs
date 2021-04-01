@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using MoviesAPI.Helpers;
 using MoviesAPI.Validations;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,13 @@ namespace MoviesAPI.DTOs
         [FileSizeValidation(MaxSize: 1)]
         [FileTypeValidation(groupFileType: GroupFileType.Imagen)]
         public IFormFile ImageFile { get; set; }
+
+        [ModelBinder(BinderType = typeof(TypeBinder<List<int>>))]
+        public List<int> GendersIDs { get; set; }
+
+        [ModelBinder(BinderType = typeof(TypeBinder<List<ActorMovieCreatorDTO>>))]
+        public List<ActorMovieCreatorDTO> Actors { get; set; }
+
     }
 
     public class MoviePatchDTO
@@ -41,4 +50,6 @@ namespace MoviesAPI.DTOs
         public bool IsInTheater { get; set; }
         public DateTime DateIssued { get; set; }
     }
+
+
 }

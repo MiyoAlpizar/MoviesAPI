@@ -59,12 +59,15 @@ namespace MoviesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, [FromForm] MovieCreateDTO update)
         {
-            var movieDB = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
-            if (movieDB == null)
-            {
-                return NotFound();
-            }
+            var movieDB = await _context.Movies
+                .Include(x => x.MoviesActors)
+                .Include(x => x.MoviesGenders)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            
+            if (movieDB == null) return NotFound();
+            
             movieDB = mapper.Map(update, movieDB);
+            SetOrderActors(movieDB);
 
             if (update.ImageFile != null)
             {
@@ -95,6 +98,8 @@ namespace MoviesAPI.Controllers
                 var extension = Path.GetExtension(create.ImageFile.FileName);
                 movie.Poster = await storage.SaveFile(content, extension, CONTAINER, create.ImageFile.ContentType);
             }
+
+            SetOrderActors(movie);
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
             
@@ -148,6 +153,16 @@ namespace MoviesAPI.Controllers
         private bool MovieExists(int id)
         {
             return _context.Movies.Any(e => e.Id == id);
+        }
+
+        private void SetOrderActors(Movie movie)
+        {
+            if (movie.MoviesActors == null) return;
+
+            for (int i = 0; i < movie.MoviesActors.Count; i++)
+            {
+                movie.MoviesActors[i].Order = i;
+            }
         }
     }
 }

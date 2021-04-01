@@ -18,6 +18,20 @@ namespace MoviesAPI
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
 
+        public DbSet<MoviesActors> MoviesActors { get; set; }
+
+        public DbSet<MoviesGenders> MoviesGenders { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MoviesActors>()
+                .HasKey(x => new { x.ActorId, x.MovieId });
+
+            modelBuilder.Entity<MoviesGenders>()
+                .HasKey(x => new { x.MovieId, x.GenderId });
+
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

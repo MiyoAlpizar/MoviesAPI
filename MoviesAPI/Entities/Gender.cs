@@ -13,5 +13,7 @@ namespace MoviesAPI.Entities
         [Required]
         [StringLength(40)]
         public string Name { get; set; }
+        public List<MoviesGenders> MoviesGenders { get; set; }
+
     }
 }

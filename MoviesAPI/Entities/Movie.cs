@@ -15,5 +15,9 @@ namespace MoviesAPI.Entities
         public bool IsInTheater { get; set; }
         public DateTime DateIssued { get; set; }
         public string Poster { get; set; }
+        public List<MoviesActors> MoviesActors { get; set; }
+
+        public List<MoviesGenders> MoviesGenders { get; set; }
+
     }
 }
