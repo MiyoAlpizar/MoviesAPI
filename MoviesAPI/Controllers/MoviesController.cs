@@ -12,6 +12,8 @@ using MoviesAPI;
 using MoviesAPI.DTOs;
 using MoviesAPI.Entities;
 using MoviesAPI.Services;
+using System.Linq.Dynamic.Core;
+using Microsoft.Extensions.Logging;
 
 namespace MoviesAPI.Controllers
 {
@@ -22,13 +24,15 @@ namespace MoviesAPI.Controllers
         private readonly ApplicationDBContext _context;
         private readonly IMapper mapper;
         private readonly IFileStorage storage;
+        private readonly ILogger<MoviesController> logger;
         private readonly string CONTAINER = "movies";
 
-        public MoviesController(ApplicationDBContext context, IMapper mapper, IFileStorage storage)
+        public MoviesController(ApplicationDBContext context, IMapper mapper, IFileStorage storage, ILogger<MoviesController> logger)
         {
             _context = context;
             this.mapper = mapper;
             this.storage = storage;
+            this.logger = logger;
         }
 
         // GET: api/Movies
@@ -85,6 +89,19 @@ namespace MoviesAPI.Controllers
                     .Where(x => x.MoviesGenders
                     .Select(y => y.Gender.Name)
                     .Contains(filter.Gender));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.FieldOrderBy))
+            {
+                var asc = filter.AscOrderBy ? "ascending" : "descending";
+                try
+                {
+                    moviesQueryable = moviesQueryable.OrderBy($"{filter.FieldOrderBy} {asc}");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex.Message, ex);
+                }
             }
 
             await HttpContext.InsertPaginationParams(moviesQueryable, filter.PaginationDTO.QuantityRegistersPerPage);

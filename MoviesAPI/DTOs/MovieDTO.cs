@@ -77,6 +77,10 @@ namespace MoviesAPI.DTOs
         public bool InTheather { get; set; }
 
         public bool Next { get; set; }
+
+        public string FieldOrderBy { get; set; }
+
+        public bool AscOrderBy { get; set; } = true;
     }
 
     public class MovieDetailsDTO: MovieDTO
