@@ -18,14 +18,18 @@ namespace MoviesAPI.DTOs
         public string Image { get; set; }
     }
 
-    public class CreateActorDTO
+    public class CreateActorDTO: PatchActorDTO
+    {
+        [FileSizeValidation(MaxSize:1)]
+        [FileTypeValidation(groupFileType: GroupFileType.Imagen)]
+        public IFormFile ImageFile { get; set; }
+    }
+
+    public class PatchActorDTO
     {
         [Required]
         [StringLength(120)]
         public string Name { get; set; }
         public DateTime BirthDay { get; set; }
-        [FileSizeValidation(MaxSize:1)]
-        [FileTypeValidation(groupFileType: GroupFileType.Imagen)]
-        public IFormFile ImageFile { get; set; }
     }
 }
