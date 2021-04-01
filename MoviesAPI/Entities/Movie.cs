@@ -16,8 +16,8 @@ namespace MoviesAPI.Entities
         public DateTime DateIssued { get; set; }
         public string Poster { get; set; }
         public List<MoviesActors> MoviesActors { get; set; }
-
         public List<MoviesGenders> MoviesGenders { get; set; }
+        public List<MoviesCinemaRooms> MoviesCinemaRooms { get; set; }
 
     }
 }

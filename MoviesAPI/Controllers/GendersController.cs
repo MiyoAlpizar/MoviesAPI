@@ -14,13 +14,10 @@ namespace MoviesAPI.Controllers
     [Route("api/[controller]")]
     public class GendersController : CustomBaseController
     {
-        private readonly ApplicationDBContext context;
-        private readonly IMapper mapper;
-
+       
         public GendersController(ApplicationDBContext context, IMapper mapper) : base (context, mapper)
         {
-            this.context = context;
-            this.mapper = mapper;
+          
         }
 
         [HttpGet]

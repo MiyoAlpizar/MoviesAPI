@@ -28,6 +28,9 @@ namespace MoviesAPI.Helpers
                 .ForMember(x => x.Genders, o => o.MapFrom(MapMovieGenders))
                 .ForMember(x => x.Actors, o => o.MapFrom(MapMovieActors));
 
+            CreateMap<CinemaRoom, CinemaRoomCreateDTO>().ReverseMap();
+            CreateMap<CinemaRoom, CinemaRoomDTO>().ReverseMap();
+
 
         }
 
