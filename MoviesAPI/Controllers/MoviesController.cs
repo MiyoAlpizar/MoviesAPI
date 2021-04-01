@@ -94,16 +94,20 @@ namespace MoviesAPI.Controllers
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MovieDTO>> GetMovie(int id)
+        public async Task<ActionResult<MovieDetailsDTO>> GetMovie(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _context.Movies
+                .Include(x => x.MoviesActors).ThenInclude(x => x.Actor)
+                .Include(x => x.MoviesGenders).ThenInclude(x => x.Gender)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (movie == null)
             {
                 return NotFound();
             }
+            movie.MoviesActors = movie.MoviesActors.OrderBy(x => x.Order).ToList();
 
-            return mapper.Map<MovieDTO>(movie);
+            return mapper.Map<MovieDetailsDTO>(movie);
         }
 
         // PUT: api/Movies/5
