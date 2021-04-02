@@ -49,7 +49,6 @@ namespace MoviesAPI
 
             services.AddSingleton(provider => 
                 new MapperConfiguration(config => {
-
                     var geometry = provider.GetRequiredService<GeometryFactory>();
                     config.AddProfile(new AutoMapperProfiles(geometry));
                 }).CreateMapper()
